@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frankenstein Lesson 10 Interactive Portal (Ch. 22–23)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@300;400;500;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        amber: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        },
+                        slate: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#090d16',
+                        }
+                    },
+                    fontFamily: {
+                        cinzel: ['Cinzel', 'serif'],
+                        serif: ['Merriweather', 'serif'],
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #090d16 !important;
+            color: #f1f5f9 !important;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .font-cinzel { font-family: 'Cinzel', serif; }
+        .font-serif { font-family: 'Merriweather', serif; }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #f59e0b;
+        }
+
+        .perspective { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+        .flip-card-inner { transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .flip-card:hover .flip-card-inner { transform: rotateY(180deg); }
+
+        .tab-content { display: block; }
+        .tab-content.hidden { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans selection:bg-amber-500 selection:text-slate-950">
+
+    <header class="sticky top-0 z-50 bg-slate-950/95 backdrop-blur border-b border-slate-800 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-500 to-amber-700 flex items-center justify-center text-slate-950 font-bold text-xl shadow-md font-cinzel">
+                    F
+                </div>
+                <div>
+                    <h1 class="font-cinzel font-bold text-lg sm:text-xl text-slate-100 tracking-wide flex items-center gap-2">
+                        <span>Frankenstein</span>
+                        <span class="text-xs px-2 py-0.5 rounded bg-amber-500/20 text-amber-400 border border-amber-500/30 font-sans font-medium">Lesson 10</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 font-serif italic">Chapters XXII–XXIII • The Nuptial Vow, Dramatic Irony & The Tragic Blind Spot</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleTeacherKey()" id="teacher-key-btn" class="px-3 py-1.5 rounded-lg border border-slate-700 bg-slate-900 hover:bg-slate-800 text-slate-300 text-xs font-semibold flex items-center space-x-2 transition">
+                    <i class="fa-solid fa-key text-amber-400"></i>
+                    <span id="key-btn-text">Show Exemplar Keys</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="bg-slate-950 border-t border-slate-800/80 overflow-x-auto custom-scrollbar">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 flex space-x-1 sm:space-x-2 py-2 text-xs sm:text-sm font-medium whitespace-nowrap">
+                <button onclick="switchTab('hwreview')" id="nav-hwreview" class="nav-btn active px-3.5 py-1.5 rounded-md text-amber-400 bg-amber-500/10 border border-amber-500/30 font-semibold flex items-center space-x-2">
+                    <i class="fa-solid fa-clipboard-check"></i><span>1. Homework Review (Ch. 20–21)</span>
+                </button>
+                <button onclick="switchTab('closereading')" id="nav-closereading" class="nav-btn px-3.5 py-1.5 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent flex items-center space-x-2">
+                    <i class="fa-solid fa-book-open"></i><span>2. Close Reading (Ch. 22–23)</span>
+                </button>
+                <button onclick="switchTab('literary')" id="nav-literary" class="nav-btn px-3.5 py-1.5 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent flex items-center space-x-2">
+                    <i class="fa-solid fa-masks-theater text-amber-400"></i><span>3. Literary Focus: Dramatic Irony & Tragic Hero</span>
+                </button>
+                <button onclick="switchTab('homework')" id="nav-homework" class="nav-btn px-3.5 py-1.5 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent flex items-center space-x-2">
+                    <i class="fa-solid fa-pen-nib text-amber-500"></i><span>4. Writing Homework</span>
+                </button>
+                <button onclick="switchTab('preview')" id="nav-preview" class="nav-btn px-3.5 py-1.5 rounded-md text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent flex items-center space-x-2">
+                    <i class="fa-solid fa-forward text-amber-400"></i><span>5. Next Lesson Preview (Ch. 24)</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <section id="section-hwreview" class="tab-content space-y-8">
+            <div class="border-b border-slate-800 pb-4">
+                <div class="flex items-center space-x-2 text-xs font-mono text-amber-400">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Chapters 20–21 Homework Review</span>
+                </div>
+                <h2 class="font-cinzel text-2xl font-bold text-slate-100 mt-1">Vocabulary Check & Exemplar Essay Review</h2>
+                <p class="text-sm text-slate-400 font-serif">Assess your vocabulary mastery from Chapters 20–21 and analyze the annotated exemplar essay before exploring the wedding night tragedy.</p>
+            </div>
+
+            <!-- Part A: Vocabulary Quiz -->
+            <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-6 shadow-xl">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
+                    <div>
+                        <span class="text-xs font-mono text-amber-400 uppercase tracking-wider font-bold">Part A • Quick Check</span>
+                        <h3 class="font-cinzel text-lg font-bold text-slate-100">Chapters 20–21 Vocabulary Quiz</h3>
+                    </div>
+                    <div id="quiz-score-badge" class="px-3 py-1 bg-slate-900 border border-slate-800 rounded-lg text-xs font-mono text-slate-300">
+                        Score: <span id="quiz-score" class="text-amber-400 font-bold">0</span> / 5
+                    </div>
+                </div>
+
+                <div class="space-y-6" id="quiz-container">
+                    <!-- Q1 -->
+                    <div class="quiz-q p-4 bg-slate-900/60 rounded-lg border border-slate-800 space-y-3">
+                        <p class="text-xs sm:text-sm font-serif text-slate-200">
+                            <strong>1.</strong> Victor declares to the monster, <em>"Leave me — I am <span class="text-amber-400 font-bold">inexorable</span>."</em> What does <em>inexorable</em> mean?
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-serif">
+                            <button onclick="checkAnswer(1, 'A', false)" class="q1-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">A. Terrified and eager to negotiate terms.</button>
+                            <button onclick="checkAnswer(1, 'B', true)" class="q1-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">B. Impossible to stop or prevent; unyielding and relentless.</button>
+                            <button onclick="checkAnswer(1, 'C', false)" class="q1-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">C. Compassionate and forgiving of past transgressions.</button>
+                            <button onclick="checkAnswer(1, 'D', false)" class="q1-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">D. Completely physically disabled by fever.</button>
+                        </div>
+                        <div id="q1-feedback" class="hidden text-xs font-serif italic pt-1"></div>
+                    </div>
+
+                    <!-- Q2 -->
+                    <div class="quiz-q p-4 bg-slate-900/60 rounded-lg border border-slate-800 space-y-3">
+                        <p class="text-xs sm:text-sm font-serif text-slate-200">
+                            <strong>2.</strong> Victor reflects that he was previously moved by the <span class="text-amber-400 font-bold">sophisms</span> of the creature. A <em>sophism</em> is:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-serif">
+                            <button onclick="checkAnswer(2, 'A', false)" class="q2-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">A. Sacred oaths spoken before God.</button>
+                            <button onclick="checkAnswer(2, 'B', true)" class="q2-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">B. Clever but deceptive and logically flawed arguments.</button>
+                            <button onclick="checkAnswer(2, 'C', false)" class="q2-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">C. Violent physical strikes meant to inflict harm.</button>
+                            <button onclick="checkAnswer(2, 'D', false)" class="q2-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">D. Poetic verses composed to express grief.</button>
+                        </div>
+                        <div id="q2-feedback" class="hidden text-xs font-serif italic pt-1"></div>
+                    </div>
+
+                    <!-- Q3 -->
+                    <div class="quiz-q p-4 bg-slate-900/60 rounded-lg border border-slate-800 space-y-3">
+                        <p class="text-xs sm:text-sm font-serif text-slate-200">
+                            <strong>3.</strong> When Victor states <em>"the hour of my <span class="text-amber-400 font-bold">irresolution</span> is past,"</em> he means that:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-serif">
+                            <button onclick="checkAnswer(3, 'A', true)" class="q3-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">A. His indecisiveness and hesitation have ended.</button>
+                            <button onclick="checkAnswer(3, 'B', false)" class="q3-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">B. He has decided to resume building the second creature.</button>
+                            <button onclick="checkAnswer(3, 'C', false)" class="q3-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">C. He plans to surrender himself to the monster's mercy.</button>
+                            <button onclick="checkAnswer(3, 'D', false)" class="q3-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">D. His physical strength has returned entirely.</button>
+                        </div>
+                        <div id="q3-feedback" class="hidden text-xs font-serif italic pt-1"></div>
+                    </div>
+
+                    <!-- Q4 -->
+                    <div class="quiz-q p-4 bg-slate-900/60 rounded-lg border border-slate-800 space-y-3">
+                        <p class="text-xs sm:text-sm font-serif text-slate-200">
+                            <strong>4.</strong> In Irish custody, Victor faces the <span class="text-amber-400 font-bold">ignominy</span> of a public murder trial. <em>Ignominy</em> signifies:
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-serif">
+                            <button onclick="checkAnswer(4, 'A', false)" class="q4-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">A. Sudden financial bankruptcy and loss of land.</button>
+                            <button onclick="checkAnswer(4, 'B', true)" class="q4-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">B. Public disgrace, dishonour, and humiliation.</button>
+                            <button onclick="checkAnswer(4, 'C', false)" class="q4-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">C. Merciful acquittal granted by a judge.</button>
+                            <button onclick="checkAnswer(4, 'D', false)" class="q4-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">D. An honorable military distinction.</button>
+                        </div>
+                        <div id="q4-feedback" class="hidden text-xs font-serif italic pt-1"></div>
+                    </div>
+
+                    <!-- Q5 -->
+                    <div class="quiz-q p-4 bg-slate-900/60 rounded-lg border border-slate-800 space-y-3">
+                        <p class="text-xs sm:text-sm font-serif text-slate-200">
+                            <strong>5.</strong> Victor describes his mental condition after Clerval's murder as a state of <span class="text-amber-400 font-bold">torpor</span>. What is <em>torpor</em>?
+                        </p>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-serif">
+                            <button onclick="checkAnswer(5, 'A', false)" class="q5-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">A. Violent physical convulsions and screaming.</button>
+                            <button onclick="checkAnswer(5, 'B', false)" class="q5-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">B. Acute intellectual focus and scientific clarity.</button>
+                            <button onclick="checkAnswer(5, 'C', true)" class="q5-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">C. Physical or mental inactivity, apathy, and emotional numbness.</button>
+                            <button onclick="checkAnswer(5, 'D', false)" class="q5-opt p-2.5 text-left bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded text-slate-300 transition">D. Eager anticipation of his wedding ceremony.</button>
+                        </div>
+                        <div id="q5-feedback" class="hidden text-xs font-serif italic pt-1"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Part B: Model Synthesis Essay Review -->
+            <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-6 shadow-xl">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-800 pb-3">
+                    <div>
+                        <span class="text-xs font-mono text-amber-400 uppercase tracking-wider font-bold">Part B • Chapters 20–21 Essay Review</span>
+                        <h3 class="font-cinzel text-lg font-bold text-slate-100">Exemplar Essay & AP Scoring Rubric</h3>
+                    </div>
+                    <div>
+                        <button onclick="toggleAnnotations()" id="toggle-annotations-btn" class="px-3 py-1.5 rounded-lg border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 text-xs font-semibold font-mono flex items-center space-x-2 transition">
+                            <i class="fa-solid fa-comment-dots"></i>
+                            <span id="annotation-btn-text">Hide Teacher Annotations</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="p-4 bg-slate-900/80 border border-slate-800 rounded-lg space-y-2 text-xs text-slate-300 font-serif">
+                    <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[11px]">Previous Prompt Refresher:</p>
+                    <p class="italic">"Analyze how Victor's self-absorbed misinterpretation of the Creature's threat---'I shall be with you on your wedding-night'---highlights his tragic flaw. How does the murder of Henry Clerval in Chapter 21 demonstrate that the Creature has adopted Victor's own methods of inflicting isolation?"</p>
+                </div>
+
+                <!-- AP Scoring Rubric Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                    <div class="p-3.5 bg-slate-900 rounded-lg border border-emerald-500/30 space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-emerald-400 font-mono text-[11px]">Row A: Thesis</span>
+                            <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 text-[10px] font-mono font-bold">1 / 1 Pt</span>
+                        </div>
+                        <p class="text-slate-300 font-serif text-[11px]">Articulates a defensible claim that Victor's egocentrism blinds him to the true target, inviting moral retribution through Clerval's death.</p>
+                    </div>
+                    <div class="p-3.5 bg-slate-900 rounded-lg border border-amber-500/30 space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-amber-400 font-mono text-[11px]">Row B: Evidence & Commentary</span>
+                            <span class="px-2 py-0.5 rounded bg-amber-950 text-amber-400 border border-amber-800 text-[10px] font-mono font-bold">4 / 4 Pts</span>
+                        </div>
+                        <p class="text-slate-300 font-serif text-[11px]">Integrates evidence of the broken mate, Clerval's strangled neck, and the psychological parallel of retaliatory isolation.</p>
+                    </div>
+                    <div class="p-3.5 bg-slate-900 rounded-lg border border-purple-500/30 space-y-1.5">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-purple-400 font-mono text-[11px]">Row C: Sophistication</span>
+                            <span class="px-2 py-0.5 rounded bg-purple-950 text-purple-400 border border-purple-800 text-[10px] font-mono font-bold">1 / 1 Pt</span>
+                        </div>
+                        <p class="text-slate-300 font-serif text-[11px]">Analyzes the mirror dynamic: how the monster adopts the creator's cruelty to dismantle his domestic sanctuary.</p>
+                    </div>
+                </div>
+
+                <!-- Teacher Exemplar Response -->
+                <div class="p-6 bg-slate-900 border-l-4 border-amber-500 rounded-r-xl space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                        <span class="font-bold text-amber-400 text-xs font-mono uppercase tracking-wider flex items-center gap-2">
+                            <i class="fa-solid fa-star text-amber-400"></i>
+                            <span>Annotated High-Scoring Essay Model (AP Score: 6/6)</span>
+                        </span>
+                        <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2.5 py-1 rounded-full font-bold">
+                            Total: 6 / 6 Points
+                        </span>
+                    </div>
+
+                    <div class="text-xs sm:text-sm font-serif text-slate-200 leading-relaxed space-y-3">
+                        <!-- Paragraph Section 1 -->
+                        <div class="p-2.5 rounded hover:bg-slate-800/50 transition">
+                            <span class="bg-emerald-900/30 border-b-2 border-emerald-400 text-slate-100">
+                                "Victor Frankenstein’s fatal misinterpretation of the Creature’s vow---<em>'I shall be with you on your wedding-night'</em>---crystallizes the incurable hubris and narcissism that define his tragic downfall."
+                            </span>
+                            <div class="teacher-annotation mt-2 p-2.5 bg-emerald-950/70 border border-emerald-800/80 rounded-lg text-emerald-300 text-[11px] font-sans flex items-start gap-2">
+                                <i class="fa-solid fa-feather text-emerald-400 mt-0.5"></i>
+                                <div>
+                                    <strong class="font-mono text-emerald-400 uppercase tracking-wider block text-[10px]">Teacher Note • Row A (Thesis Statement):</strong>
+                                    Establishes an articulate thesis connecting Victor's specific misinterpretation to his fundamental character flaw (hubris and narcissism).
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paragraph Section 2 -->
+                        <div class="p-2.5 rounded hover:bg-slate-800/50 transition">
+                            <span class="bg-amber-900/30 border-b-2 border-amber-400 text-slate-100">
+                                "Believing himself to be the sole epicenter of the fiend’s wrath, Victor fixates exclusively on his own martyrdom, arming himself with pistols while remaining catastrophically blind to Elizabeth's mortal peril. In destroying the half-finished female mate out of fear of a monstrous posterity, Victor acts as an <em>inexorable</em> judge; yet he hypocritically expects his loved ones to remain immune to the consequences."
+                            </span>
+                            <div class="teacher-annotation mt-2 p-2.5 bg-amber-950/70 border border-amber-800/80 rounded-lg text-amber-300 text-[11px] font-sans flex items-start gap-2">
+                                <i class="fa-solid fa-quote-left text-amber-400 mt-0.5"></i>
+                                <div>
+                                    <strong class="font-mono text-amber-400 uppercase tracking-wider block text-[10px]">Teacher Note • Row B (Textual Evidence & Commentary):</strong>
+                                    Smoothly incorporates targeted vocabulary (<em>inexorable</em>) and contrasts Victor's self-preservation with his negligence regarding Elizabeth.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Paragraph Section 3 -->
+                        <div class="p-2.5 rounded hover:bg-slate-800/50 transition">
+                            <span class="bg-purple-900/30 border-b-2 border-purple-400 text-slate-100">
+                                "The gruesome murder of Henry Clerval in Chapter 21 confirms that the Creature has adopted Victor’s own weapon: forced solitary exile. By strangling Clerval---the radiant foil who embodied Victor’s lost communion with humanity---the monster denies Victor what Victor denied him: an equal partner. Cast into a prison of fever and <em>torpor</em>, Victor learns that his punishment is not physical death, but the agony of living entirely alone in a graveyard of his own making."
+                            </span>
+                            <div class="teacher-annotation mt-2 p-2.5 bg-purple-950/70 border border-purple-800/80 rounded-lg text-purple-300 text-[11px] font-sans flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-purple-400 mt-0.5"></i>
+                                <div>
+                                    <strong class="font-mono text-purple-400 uppercase tracking-wider block text-[10px]">Teacher Note • Row C (Sophistication):</strong>
+                                    Develops the symbolic meaning of Clerval's death and demonstrates how the creature's revenge systematically mirrors Victor's crime of forced isolation.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-closereading" class="tab-content hidden space-y-8">
+            <div class="border-b border-slate-800 pb-4">
+                <div class="flex items-center space-x-2 text-xs font-mono text-amber-400">
+                    <i class="fa-solid fa-align-left"></i>
+                    <span>Close Reading • 10 Core Questions (Ch. 22–23)</span>
+                </div>
+                <h2 class="font-cinzel text-2xl font-bold text-slate-100 mt-1">Chapters 22–23 Guided Textual Analysis</h2>
+                <p class="text-sm text-slate-400 font-serif">Examine the wedding preparations, Victor's tragic blindness, Elizabeth's death, Alphonse's demise, and the Genevan magistrate.</p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- Q1 (Ch. 22 - Q8 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 1 • Ch. XXII</span>
+                        <button onclick="toggleAnswer('ans-1')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        Why does Victor decide to marry Elizabeth immediately?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q1" rows="3" oninput="saveResponse('q1')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-1" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"He thinks that moving up the wedding time will hasten his destiny. He longs for the battle in which one of them, either he or the creature, will die, thus bringing him freedom."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q2 (Ch. 22 - Q9 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 2 • Ch. XXII</span>
+                        <button onclick="toggleAnswer('ans-2')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        In what way does Elizabeth restore the Romantic Victor?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q2" rows="3" oninput="saveResponse('q2')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-2" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"Her voice soothes him, which shows that he can still be calmed by the Romantic ideal of love and female beauty."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q3 (Ch. 22 - Q10 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 3 • Ch. XXII</span>
+                        <button onclick="toggleAnswer('ans-3')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        What do you think will happen on Victor and Elizabeth's wedding night?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q3" rows="3" oninput="saveResponse('q3')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-3" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"Hopefully the students will be able to predict that Elizabeth is going to be killed. The entire issue with the creature has been companionship. So his just revenge would not be to kill Victor as much as to deny Victor companionship."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q4 (Ch. 22 - Q11 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 4 • Ch. XXII</span>
+                        <button onclick="toggleAnswer('ans-4')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        How does Shelley build suspense in these chapters?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q4" rows="3" oninput="saveResponse('q4')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-4" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"Shelley delays revealing who the murder victim is while offering clues that the murderer is the creature and the victim might be Clerval. Victor seems to condemn himself in his reaction to seeing Clerval’s body and in his feverish rantings. He continues to misinterpret the creature’s threat to be with him on his wedding night, and actually advances the date of the wedding."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q5 (Ch. 22 - Q12 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 5 • Ch. XXII</span>
+                        <button onclick="toggleAnswer('ans-5')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        What evidence is there to suggest what the creature really means by his threat to be with Frankenstein on his wedding night?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q5" rows="3" oninput="saveResponse('q5')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-5" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"The creature desires companionship. That has been his sole issue since the day of his coming to life. Victor has denied him that companionship—even to the extent of destroying the female companion. Therefore, the creature will do all he can to deprive Victor of companionship—even to the extent of destroying Victor’s “female companion” (i.e. Elizabeth)."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q6 (Ch. 23 - Q1 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 6 • Ch. XXIII</span>
+                        <button onclick="toggleAnswer('ans-6')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        When does it finally occur to Victor that he has foolishly misinterpreted the creature's threat?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q6" rows="3" oninput="saveResponse('q6')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-6" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"When Victor hears Elizabeth scream, it occurs to him what the threat must have meant."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q7 (Ch. 23 - Q2 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 7 • Ch. XXIII</span>
+                        <button onclick="toggleAnswer('ans-7')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        How does the monster react to his murdering Elizabeth?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q7" rows="3" oninput="saveResponse('q7')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-7" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"He is delighted at having finally wrought his revenge."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q8 (Ch. 23 - Q3 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 8 • Ch. XXIII</span>
+                        <button onclick="toggleAnswer('ans-8')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        What does the word “acme” mean in the following context: “Mine has been a tale of horrors; I have reached their acme, and what I must now relate can but be tedious to you”?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q8" rows="3" oninput="saveResponse('q8')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-8" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"Climax, summit."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q9 (Ch. 23 - Q4 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 9 • Ch. XXIII</span>
+                        <button onclick="toggleAnswer('ans-9')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        What is different about Victor's reaction to Elizabeth's (and his father's) death from the rest?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q9" rows="3" oninput="saveResponse('q9')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-9" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"Before he sought the monster only to meet his destiny, but now he simply wants revenge."</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Q10 (Ch. 23 - Q5 on Worksheet) -->
+                <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-lg">
+                    <div class="flex items-center justify-between">
+                        <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Question 10 • Ch. XXIII</span>
+                        <button onclick="toggleAnswer('ans-10')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                            <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                        </button>
+                    </div>
+                    <h3 class="text-base font-semibold text-slate-100 font-serif">
+                        Victor, in his anger, says to the magistrate, “How ignorant art thou in thy pride of wisdom.” What is the irony in this?
+                    </h3>
+                    <div class="space-y-3">
+                        <textarea id="student-q10" rows="3" oninput="saveResponse('q10')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Type your analytical response here..."></textarea>
+                        
+                        <div id="ans-10" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                            <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">Exemplar Answer Key:</p>
+                            <p class="italic">"It is Victor’s pride and wisdom that led him to create the monster."</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="section-literary" class="tab-content hidden space-y-8">
+            <div class="border-b border-slate-800 pb-4">
+                <div class="flex items-center space-x-2 text-xs font-mono text-amber-400">
+                    <i class="fa-solid fa-masks-theater"></i>
+                    <span>Key Literary Focus • Chapters 22–23</span>
+                </div>
+                <h2 class="font-cinzel text-2xl font-bold text-slate-100 mt-1">Dramatic Irony & The Aristotelian Tragic Hero</h2>
+                <p class="text-sm text-slate-400 font-serif">Analyze Victor Frankenstein as a classic tragic hero whose fatal flaw (hamartia), self-absorbed hubris, and anagnorisis catalyze the wedding-night catastrophe.</p>
+            </div>
+
+            <!-- Concept Banner -->
+            <div class="p-6 rounded-xl bg-slate-950 border border-amber-500/30 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 space-y-3 shadow-lg">
+                <div class="flex items-center justify-between">
+                    <span class="px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/30 rounded font-mono text-xs font-bold uppercase">AP Literature Master Concept</span>
+                    <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-scale-unbalanced-flip mr-1"></i>Tragic Structure & Cosmic Irony</span>
+                </div>
+                <h3 class="font-cinzel text-xl font-bold text-slate-100">The Fatal Solipsism: Victor as Tragic Hero</h3>
+                <p class="text-xs text-slate-300 font-serif leading-relaxed">
+                    Aristotelian tragedy posits that a protagonist of noble birth and lofty aspirations falls not through inherent wickedness, but through an error in judgment or character blind spot (<em>hamartia</em>). In Chapters 22–23, Shelley deploys <strong>Dramatic Irony</strong> at its highest pitch: while readers and the Creature recognize that companionship is the monster's only grievance, Victor's consuming <strong>hubris</strong> convinces him that he alone is the intended victim. By locking Elizabeth inside the bridal suite to protect her while he prowls the perimeter, Victor's blindness directly orchestrates her murder.
+                </p>
+            </div>
+
+            <!-- 3 Core Analytical Dimensions -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 text-xs">
+                <!-- Pillar 1 -->
+                <div class="p-5 bg-slate-950 border border-slate-800 rounded-xl space-y-3 hover:border-amber-500/40 transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-mono text-amber-400 uppercase tracking-wider">Device 1 • Structural Tension</span>
+                            <h4 class="font-cinzel text-base font-bold text-slate-100">Agonizing Dramatic Irony</h4>
+                        </div>
+                        <span class="px-2 py-0.5 rounded bg-slate-900 text-amber-400 border border-slate-800 text-[10px] font-mono">Narrative Split</span>
+                    </div>
+                    <p class="text-slate-300 font-serif leading-relaxed">
+                        The reader knows the Creature’s entire crusade stems from the denial of a bride. When the Creature vows, <em>"I shall be with you on your wedding-night,"</em> the audience anticipates Elizabeth's peril. Victor's inability to see what is glaringly obvious to everyone else creates unbearable narrative dread.
+                    </p>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-800 font-serif italic text-slate-400 text-[11px]">
+                        "I had choked every sensation of humanity... and imagined that the monster had no other purpose than my own destruction."
+                    </div>
+                </div>
+
+                <!-- Pillar 2 -->
+                <div class="p-5 bg-slate-950 border border-slate-800 rounded-xl space-y-3 hover:border-amber-500/40 transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-mono text-amber-400 uppercase tracking-wider">Device 2 • Character Flaw</span>
+                            <h4 class="font-cinzel text-base font-bold text-slate-100">Hamartia & Egotism</h4>
+                        </div>
+                        <span class="px-2 py-0.5 rounded bg-slate-900 text-amber-400 border border-slate-800 text-[10px] font-mono">Tragic Defect</span>
+                    </div>
+                    <p class="text-slate-300 font-serif leading-relaxed">
+                        Victor's <em>hamartia</em> is his unrelenting solipsism. Even during romance and wedding preparations, Victor interprets every cosmic event through the prism of his own martyrdom. He assumes the creature’s wrath exists purely to duel *him*, making Elizabeth an unwitting casualty of his self-absorption.
+                    </p>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-800 font-serif italic text-slate-400 text-[11px]">
+                        "Great God! Why did I not then expire! Why am I here to relate the destruction of the best that ever lived?"
+                    </div>
+                </div>
+
+                <!-- Pillar 3 -->
+                <div class="p-5 bg-slate-950 border border-slate-800 rounded-xl space-y-3 hover:border-amber-500/40 transition-colors">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="text-[10px] font-mono text-amber-400 uppercase tracking-wider">Device 3 • The Reversal</span>
+                            <h4 class="font-cinzel text-base font-bold text-slate-100">Anagnorisis & Peripeteia</h4>
+                        </div>
+                        <span class="px-2 py-0.5 rounded bg-slate-900 text-amber-400 border border-slate-800 text-[10px] font-mono">Climactic Shift</span>
+                    </div>
+                    <p class="text-slate-300 font-serif leading-relaxed">
+                        The scream from the bridal room produces instantaneous <em>anagnorisis</em> (tragic recognition). In that moment, Victor's illusions collapse; he reaches the <em>"acme of horrors."</em> His defensive posture instantly shifts into irreversible loss, transforming him from a passive prey into an engine of pure vengeance.
+                    </p>
+                    <div class="p-3 bg-slate-900 rounded border border-slate-800 font-serif italic text-slate-400 text-[11px]">
+                        "The arms had ceased to drop down... A grin was on the face of the monster; he seemed to jeer, as with his fiendish finger he pointed towards the corpse."
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison Table: Victor's Tragic Hero Blueprint -->
+            <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-xl">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                    <h3 class="font-cinzel text-base font-bold text-slate-100 flex items-center gap-2">
+                        <i class="fa-solid fa-scroll text-amber-400"></i>
+                        <span>The Anatomy of Victor's Downfall (Aristotelian Tragedy Matrix)</span>
+                    </h3>
+                    <span class="text-xs text-amber-400 font-mono">AP Lit Question 12 Analysis</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-serif">
+                    <div class="p-3 bg-slate-900/70 border border-slate-800 rounded-lg space-y-1">
+                        <span class="font-mono text-amber-400 font-bold uppercase text-[10px]">1. High Stature & Noble Aspirations</span>
+                        <p class="text-slate-300 text-[11px]">Born of a distinguished Genevan magistracy line; intended his scientific discoveries to banish disease and conquer mortality for the welfare of mankind.</p>
+                    </div>
+                    <div class="p-3 bg-slate-900/70 border border-slate-800 rounded-lg space-y-1">
+                        <span class="font-mono text-amber-400 font-bold uppercase text-[10px]">2. Hubris & Transgression</span>
+                        <p class="text-slate-300 text-[11px]">Usurped natural reproduction and divine prerogative, proudly aspiring to omnipotence while neglecting the moral duties owed to sentient life.</p>
+                    </div>
+                    <div class="p-3 bg-slate-900/70 border border-slate-800 rounded-lg space-y-1">
+                        <span class="font-mono text-amber-400 font-bold uppercase text-[10px]">3. Hamartia (Fatal Blind Spot)</span>
+                        <p class="text-slate-300 text-[11px]">Pervasive solipsism. Because he views himself as the hero/martyr of the universe, he cannot fathom that the Creature's retribution would target Elizabeth.</p>
+                    </div>
+                    <div class="p-3 bg-slate-900/70 border border-slate-800 rounded-lg space-y-1">
+                        <span class="font-mono text-amber-400 font-bold uppercase text-[10px]">4. Catastrophic Anagnorisis & Exile</span>
+                        <p class="text-slate-300 text-[11px]">The scream in Chapter 23 strips away all delusion. With Elizabeth and Alphonse dead, he becomes the isolated wanderer he forced the Creature to be.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Reflection Task -->
+            <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-xl">
+                <div class="flex justify-between items-center">
+                    <span class="px-2.5 py-1 rounded bg-slate-900 border border-slate-800 text-amber-400 font-mono text-xs">Interactive Analysis Task</span>
+                    <button onclick="toggleAnswer('ans-literary-lab')" class="text-xs text-slate-400 hover:text-amber-400 flex items-center space-x-1">
+                        <i class="fa-solid fa-eye"></i><span>Toggle Exemplar Key</span>
+                    </button>
+                </div>
+
+                <h3 class="text-base font-semibold text-slate-100 font-serif">
+                    Critical Reflection: How does Victor's rebuke to the Genevan magistrate—<em>“How ignorant art thou in thy pride of wisdom”</em>—epitomize the ultimate tragic irony of his character?
+                </h3>
+
+                <div class="space-y-3">
+                    <textarea id="student-literary" rows="4" oninput="saveResponse('literary_reflection')" class="w-full p-3 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Analyze how Victor projects his own fatal intellectual arrogance onto the civil authorities..."></textarea>
+                    
+                    <div id="ans-literary-lab" class="ans-box hidden p-4 bg-slate-900 border-l-4 border-amber-500 rounded-r-lg text-xs text-slate-300 space-y-2 font-serif">
+                        <p class="font-bold text-amber-400 font-sans uppercase tracking-wider text-[10px]">AP Literature Exemplar Key:</p>
+                        <p class="italic">
+                            The statement is steeped in supreme psychological projection and dramatic irony. Victor condemns the magistrate for relying on rational skepticism and the conventional limits of human knowledge, scorning his "pride of wisdom." Yet it was Victor’s own arrogant "pride of wisdom"—his hubristic quest to penetrate the secrets of life and death without foreseeing the consequences—that brought the monster into existence and doomed his entire domestic world. In rebuking the magistrate, Victor unconsciously passes judgment on himself.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-homework" class="tab-content hidden space-y-6">
+            <div class="border-b border-slate-800 pb-4">
+                <div class="flex items-center space-x-2 text-xs font-mono text-amber-400">
+                    <i class="fa-solid fa-pen-nib"></i>
+                    <span>Synthesis Essay • 150–300 Words</span>
+                </div>
+                <h2 class="font-cinzel text-2xl font-bold text-slate-100 mt-1">Analytical Writing Homework</h2>
+                <p class="text-sm text-slate-400 font-serif">Craft an analytical response evaluating the climax of Chapter 23, tragic hamartia, and the ironic destruction of the bridal sanctuary.</p>
+            </div>
+
+            <!-- Prompt Box -->
+            <div class="p-6 bg-slate-950 border border-slate-800 rounded-xl space-y-4 shadow-xl">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="px-2.5 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono text-xs font-bold uppercase">Lesson 10 Writing Prompt</span>
+                    <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-clock mr-1"></i>Target: 150 – 300 words</span>
+                </div>
+
+                <div class="space-y-2">
+                    <h3 class="font-cinzel text-lg font-bold text-slate-100">
+                        Prompt: Tragic Hamartia & The Desecrated Sanctuary
+                    </h3>
+                    <p class="text-xs text-slate-300 font-serif leading-relaxed">
+                        In Chapters 22–23, the Creature fulfills his threat by murdering Elizabeth on her wedding night, leaving Victor with only his grief and an unheeding magistrate.
+                        <br><br>
+                        In a well-crafted analytical paragraph (150–300 words), evaluate how Victor fits the archetype of an Aristotelian tragic hero. How does his <em>hamartia</em> (his solipsistic blindness and pride) directly precipitate Elizabeth’s death, and how does her lifeless corpse on the wedding bed represent the ultimate destruction of his Romantic sanctuary?
+                    </p>
+                </div>
+
+                <!-- Textarea with Live Word Counter -->
+                <div class="space-y-2">
+                    <textarea id="essay-input" rows="10" oninput="updateWordCount()" class="w-full p-4 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs sm:text-sm font-serif leading-relaxed focus:outline-none focus:border-amber-500 custom-scrollbar" placeholder="Begin your analytical essay here... Integrate direct textual evidence and close-reading analysis to support your line of reasoning."></textarea>
+                    
+                    <div class="flex items-center justify-between text-xs font-mono px-1">
+                        <div id="word-count-badge" class="text-slate-400">
+                            Word Count: <span id="word-count" class="font-bold text-slate-200">0</span> / 150–300 words
+                        </div>
+                        <div id="word-status" class="text-amber-500 font-semibold">
+                            Minimum 150 words required
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Success Criteria -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs pt-2">
+                    <div class="p-3 bg-slate-900/60 rounded border border-slate-800/80 space-y-1">
+                        <span class="font-bold text-amber-400 block font-mono">Writing Success Criteria:</span>
+                        <ul class="list-disc list-inside text-slate-400 space-y-1 font-serif">
+                            <li>Formulate a defensible thesis on Victor's tragic solipsism.</li>
+                            <li>Integrate relevant textual evidence and literary analysis.</li>
+                            <li>Analyze the bridal chamber as a violated domestic space.</li>
+                        </ul>
+                    </div>
+                    <div class="p-3 bg-slate-900/60 rounded border border-slate-800/80 space-y-1">
+                        <span class="font-bold text-amber-400 block font-mono">Teacher Exemplar Note:</span>
+                        <p class="text-slate-400 font-serif">
+                            Top responses will emphasize that Victor's obsession with his own danger exposes the same moral blindness that caused him to abandon his creature in Chapter 5. The destruction of Elizabeth leaves him as desolate as the monster.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="section-preview" class="tab-content hidden space-y-8">
+            <div class="border-b border-slate-800 pb-4">
+                <div class="flex items-center space-x-2 text-xs font-mono text-amber-400">
+                    <i class="fa-solid fa-forward"></i>
+                    <span>Lesson 10 Preview • Chapter 24 & Walton's Frame</span>
+                </div>
+                <h2 class="font-cinzel text-2xl font-bold text-slate-100 mt-1">Looking Ahead: The Arctic Pursuit & Epilogue</h2>
+                <p class="text-sm text-slate-400 font-serif">Prepare for the final lesson by previewing Victor's vengeful chase across the Arctic ice sheet and the Creature's closing lament.</p>
+            </div>
+
+            <!-- Preview Teaser Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                    <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-mono font-bold">The Vow of Vengeance</span>
+                    <h3 class="font-cinzel text-sm font-bold text-slate-100">The Cemetery Oath</h3>
+                    <p class="text-xs text-slate-400 font-serif">Victor visits the graves of his family and swears by the spirits of the dead to dedicate the rest of his existence to hunting the fiend.</p>
+                </div>
+
+                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                    <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-mono font-bold">The Frozen Hunt</span>
+                    <h3 class="font-cinzel text-sm font-bold text-slate-100">The Arctic Ice Sheet</h3>
+                    <p class="text-xs text-slate-400 font-serif">Guided by malicious taunts carved into trees and rocks by the Creature, Victor chases his creation across the frozen northern wastes on sledges.</p>
+                </div>
+
+                <div class="p-4 bg-slate-950 border border-slate-800 rounded-xl space-y-2">
+                    <span class="px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/30 text-[10px] font-mono font-bold">The Outer Frame</span>
+                    <h3 class="font-cinzel text-sm font-bold text-slate-100">Walton's Decision & Eulogy</h3>
+                    <p class="text-xs text-slate-400 font-serif">Victor dies on Walton's ship after warning him against dangerous ambition. The Creature arrives, weeps over his maker's corpse, and vanishes into the darkness.</p>
+                </div>
+            </div>
+
+            <!-- Chapter 24 Preview Vocabulary -->
+            <div class="space-y-4 pt-4 border-t border-slate-800">
+                <div class="flex items-center justify-between">
+                    <h3 class="font-cinzel text-lg font-bold text-slate-200 flex items-center gap-2">
+                        <i class="fa-solid fa-layer-group text-amber-400"></i>
+                        <span>Lesson 11 Vocabulary Preview (Chapter 24 & Walton, in continuation • 12 Terms)</span>
+                    </h3>
+                    <span class="text-xs text-slate-400 font-mono"><i class="fa-solid fa-hand-pointer mr-1"></i>Hover / Tap cards to reveal definitions</span>
+                </div>
+
+                <!-- 12 Flip Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                    <!-- Word 1: composure -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Ch. 24</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">noun</span>
+                                </div>
+                                <h4 class="font-cinzel text-xl font-bold text-center text-slate-100">composure</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> the state of being calm and in control of one's emotions, especially in a difficult situation.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"Revenge alone endowed me with strength and composure; it moulded my feelings."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 2: adjuration -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Ch. 24</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">noun</span>
+                                </div>
+                                <h4 class="font-cinzel text-xl font-bold text-center text-slate-100">adjuration</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> a solemn or earnest appeal or oath; an urgent, formal entreaty.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"I had begun my adjuration with solemnity, and an awe which almost assured me that the shades of my murdered friends heard and approved my devotion."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 3: apparition -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Ch. 24</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">noun</span>
+                                </div>
+                                <h4 class="font-cinzel text-xl font-bold text-center text-slate-100">apparition</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> a ghost or ghostlike image of a person; a startling or unexpected sight.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"Sometimes the peasants, scared by this horrid apparition, informed me of his path."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 4: extricate -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Ch. 24</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">verb</span>
+                                </div>
+                                <h4 class="font-cinzel text-xl font-bold text-center text-slate-100">extricate</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> to free someone or something from a difficult or complicated situation.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"A spirit of good followed and directed my steps and, when I most murmured, would suddenly extricate me from seemingly insurmountable difficulties."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 5: perseverance -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Ch. 24</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">noun</span>
+                                </div>
+                                <h4 class="font-cinzel text-lg font-bold text-center text-slate-100">perseverance</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> continued effort and determination despite difficulty or delay in achieving success.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"My courage and perseverance were invigorated by these scoffing words."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 6: protraction -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Ch. 24</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">noun</span>
+                                </div>
+                                <h4 class="font-cinzel text-xl font-bold text-center text-slate-100">protraction</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> the prolonging or extending of something, especially over a longer time than expected.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"The continual protraction of hope, returning back upon the heart, often wrung bitter drops of despondency and grief from my eyes."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 7: asseverations -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Walton</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">noun</span>
+                                </div>
+                                <h4 class="font-cinzel text-lg font-bold text-center text-slate-100">asseverations</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> solemn or emphatic declarations or affirmations.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"The apparition of the monster seen from our ship brought to me a greater conviction of the truth of his narrative than his asseverations, however earnest and connected."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 8: impenetrable -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Walton</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">adj</span>
+                                </div>
+                                <h4 class="font-cinzel text-lg font-bold text-center text-slate-100">impenetrable</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> impossible to pass through or enter; impossible to understand or see through.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"Sometimes I endeavoured to gain from Frankenstein the particulars of his creature's formation; but on this point he was impenetrable."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 9: paramount -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Walton</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">adj</span>
+                                </div>
+                                <h4 class="font-cinzel text-xl font-bold text-center text-slate-100">paramount</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> more important than anything else; supreme in authority or power.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"There was another duty still paramount to that — my duties towards the beings of my own species."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 10: contumely -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Walton</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">noun</span>
+                                </div>
+                                <h4 class="font-cinzel text-xl font-bold text-center text-slate-100">contumely</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> insolent or insulting language or treatment; contemptuous rudeness.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"Why do you not hate Felix, who drove his friend from his door with contumely?"</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 11: opprobrium -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Walton</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">noun</span>
+                                </div>
+                                <h4 class="font-cinzel text-lg font-bold text-center text-slate-100">opprobrium</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> harsh criticism or public disgrace arising from shameful conduct.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"When I die, I am well satisfied that abhorrence and opprobrium should load my memory."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Word 12: consummated -->
+                    <div class="flip-card h-48 perspective cursor-pointer">
+                        <div class="flip-card-inner relative w-full h-full duration-500 transform-style-3d">
+                            <div class="absolute inset-0 bg-slate-950 border border-slate-800 rounded-xl p-4 flex flex-col justify-between backface-hidden shadow-lg">
+                                <div class="flex justify-between items-start">
+                                    <span class="text-[10px] font-mono text-amber-400">Walton</span>
+                                    <span class="px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 text-[10px] font-mono">verb</span>
+                                </div>
+                                <h4 class="font-cinzel text-lg font-bold text-center text-slate-100">consummated</h4>
+                                <p class="text-[10px] text-center text-slate-500 font-mono">Hover to flip definition</p>
+                            </div>
+                            <div class="absolute inset-0 bg-slate-900 border border-amber-500/40 rounded-xl p-4 flex flex-col justify-between rotate-y-180 backface-hidden shadow-xl text-xs">
+                                <p class="text-slate-200 font-serif leading-tight"><strong>Def:</strong> brought to a final and complete conclusion; made perfect or fulfilled.</p>
+                                <p class="text-[10px] font-serif italic text-amber-400/90 leading-tight">"In his murder my crimes are consummated; the miserable series of my being is wound to its close."</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500 font-serif">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-center gap-2">
+            <div class="text-[11px] font-mono text-slate-600">AP Literature & Composition Standard • Lesson 10 Interactive Portal (Ch. 22–23)</div>
+        </div>
+    </footer>
+
+    <script>
+        let showAllKeys = false;
+        let showAnnotations = true;
+        let quizScore = 0;
+        const answeredQ = {1: false, 2: false, 3: false, 4: false, 5: false};
+
+        function toggleAnnotations() {
+            showAnnotations = !showAnnotations;
+            const annotations = document.querySelectorAll('.teacher-annotation');
+            const btnText = document.getElementById('annotation-btn-text');
+
+            annotations.forEach(ann => {
+                if (showAnnotations) ann.classList.remove('hidden');
+                else ann.classList.add('hidden');
+            });
+
+            if (btnText) {
+                btnText.innerText = showAnnotations ? "Hide Teacher Annotations" : "Show Teacher Annotations";
+            }
+        }
+
+        function switchTab(tabName) {
+            const sections = document.querySelectorAll('.tab-content');
+            sections.forEach(sec => sec.classList.add('hidden'));
+
+            const navBtns = document.querySelectorAll('.nav-btn');
+            navBtns.forEach(btn => {
+                btn.classList.remove('text-amber-400', 'bg-amber-500/10', 'border-amber-500/30', 'font-semibold');
+                btn.classList.add('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-900', 'border-transparent');
+            });
+
+            const activeSection = document.getElementById(`section-${tabName}`);
+            if (activeSection) activeSection.classList.remove('hidden');
+
+            const activeBtn = document.getElementById(`nav-${tabName}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-amber-400', 'bg-amber-500/10', 'border-amber-500/30', 'font-semibold');
+                activeBtn.classList.remove('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-900', 'border-transparent');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function checkAnswer(qNum, selectedOption, isCorrect) {
+            if (answeredQ[qNum]) return;
+            answeredQ[qNum] = true;
+
+            const buttons = document.querySelectorAll(`.q${qNum}-opt`);
+            buttons.forEach(btn => btn.disabled = true);
+
+            const feedback = document.getElementById(`q${qNum}-feedback`);
+            feedback.classList.remove('hidden');
+
+            if (isCorrect) {
+                quizScore++;
+                document.getElementById('quiz-score').innerText = quizScore;
+                feedback.className = "text-xs font-serif italic pt-1 text-emerald-400 font-semibold";
+                feedback.innerText = "Correct! Outstanding vocabulary recall.";
+            } else {
+                feedback.className = "text-xs font-serif italic pt-1 text-rose-400 font-semibold";
+                feedback.innerText = "Incorrect. Review the vocabulary list from Chapters 20–21.";
+            }
+        }
+
+        function toggleAnswer(id) {
+            const box = document.getElementById(id);
+            if (box) box.classList.toggle('hidden');
+        }
+
+        function toggleTeacherKey() {
+            showAllKeys = !showAllKeys;
+            const keys = document.querySelectorAll('.ans-box');
+            const btnText = document.getElementById('key-btn-text');
+
+            keys.forEach(key => {
+                if (showAllKeys) key.classList.remove('hidden');
+                else key.classList.add('hidden');
+            });
+
+            if (btnText) {
+                btnText.innerText = showAllKeys ? "Hide Exemplar Keys" : "Show Exemplar Keys";
+            }
+        }
+
+        function updateWordCount() {
+            const text = document.getElementById('essay-input').value.trim();
+            const words = text ? text.split(/\s+/).filter(w => w.length > 0).length : 0;
+            
+            const wordCountEl = document.getElementById('word-count');
+            const wordStatusEl = document.getElementById('word-status');
+
+            if (wordCountEl) wordCountEl.innerText = words;
+
+            if (wordStatusEl) {
+                if (words < 150) {
+                    wordStatusEl.innerText = `Minimum 150 words required (${150 - words} more needed)`;
+                    wordStatusEl.className = "text-amber-500 font-semibold";
+                } else if (words >= 150 && words <= 300) {
+                    wordStatusEl.innerText = "Target word count met! Excellent length.";
+                    wordStatusEl.className = "text-emerald-400 font-semibold";
+                } else {
+                    wordStatusEl.innerText = `Exceeds target limit (${words - 300} words over 300 max)`;
+                    wordStatusEl.className = "text-rose-400 font-semibold";
+                }
+            }
+            saveResponse('essay_homework');
+        }
+
+        function saveResponse(key) {
+            const val = document.getElementById(key === 'essay_homework' ? 'essay-input' : (key === 'literary_reflection' ? 'student-literary' : `student-${key}`));
+            if (val) {
+                try {
+                    localStorage.setItem(`frankenstein_l9_ch22_23_${key}`, val.value);
+                } catch(e){}
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const keys = ['q1','q2','q3','q4','q5','q6','q7','q8','q9','q10','literary_reflection','essay_homework'];
+            keys.forEach(key => {
+                try {
+                    const saved = localStorage.getItem(`frankenstein_l9_ch22_23_${key}`);
+                    if (saved) {
+                        const input = document.getElementById(key === 'essay_homework' ? 'essay-input' : (key === 'literary_reflection' ? 'student-literary' : `student-${key}`));
+                        if (input) {
+                            input.value = saved;
+                            if (key === 'essay_homework') updateWordCount();
+                        }
+                    }
+                } catch(e){}
+            });
+        });
+    </script>
+</body>
+</html>
